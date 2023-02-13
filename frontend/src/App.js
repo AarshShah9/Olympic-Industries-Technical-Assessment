@@ -1,7 +1,7 @@
 import "./App.css";
 import React from "react";
 import LineChart from "./components/LineChart";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 function App() {
   const [dataType, setDataType] = useState("");
