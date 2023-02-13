@@ -1,33 +1,39 @@
 const express = require("express");
 const app = express();
-const db = require("./db/stock.js"); // gets crud methods
+const bodyParser = require("body-parser");
+
+const sqlite3 = require("sqlite3").verbose();
+const db = new sqlite3.Database(
+  "db/lumber.sqlite3",
+  sqlite3.OPEN_READWRITE,
+  (err) => {
+    if (err) {
+      console.error(err.message);
+    } else {
+      console.log("Connected to the lumber database.");
+    }
+  }
+);
 
 // middleware
-// app.use(express.json()); // looks to see if the request has any json data
-// app.use((req, res, next) => {
-//   console.log(req.path, req.method);
-//   next();
-// });
+app.use(bodyParser.json());
 
-// routes
-app.get("/", async (req, res) => {
-  const response = db.getAllStock(); // still need to build this method
-  const data = await response; // need to parse the response and pass data of the form
-  /*
-  {
-  "data": [],
-  "labels": []
+// get request
+app.get("/data", (req, res) => {
+  try {
+    sql = "SELECT * FROM LumberStockData";
+    db.all(sql, [], (err, rows) => {
+      if (err) {
+        return res.json({ status: 404, error: err });
+      }
+      if (rows.length < 1) {
+        return res.json({ status: 404, message: "No data found" });
+      }
+      return res.json({ status: 200, message: "success", data: rows });
+    });
+  } catch (err) {
+    return res.json({ status: 400, success: false, error: err });
   }
-  */
-
-  res.status(200).json(data);
 });
 
-// connect to db
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
-
-app.listen(4000, () => {
-  console.log("Connected to DB and now listening for requests!");
-});
+app.listen(4000, () => {});
