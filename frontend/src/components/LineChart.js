@@ -5,14 +5,28 @@ import "./LineChart.css";
 
 function LineChart(props) {
   const options = {
+    scales: {
+      y: {
+        ticks: {
+          color: "white",
+        },
+        beginAtZero: true,
+      },
+      x: {
+        ticks: {
+          color: "white",
+        },
+      },
+    },
     responsive: true,
     plugins: {
       legend: {
-        position: "top",
+        display: false,
       },
       title: {
         display: true,
-        text: props.title,
+        color: "white",
+        text: "Data Chart of Stocks at '" + props.title + "' Price",
       },
     },
   };
@@ -21,7 +35,6 @@ function LineChart(props) {
     labels: props.labels,
     datasets: [
       {
-        label: props.name,
         data: props.data,
         borderColor: "rgb(255, 99, 132)",
         backgroundColor: "rgba(255, 99, 132, 0.5)",
@@ -31,7 +44,7 @@ function LineChart(props) {
 
   return (
     <section className="chart">
-      <Line data={data} options={options} />;
+      <Line data={data} options={options} />
     </section>
   );
 }

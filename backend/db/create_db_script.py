@@ -23,6 +23,7 @@ df['Close*'] = df['Close*'].astype(float)  # converts close to float
 df['Adj Close**'] = df['Adj Close**'].astype(float)
 df['Volume'] = df['Volume'].astype(float)  # converts volume to int
 
+df = df.loc[::-1]  # reverses the order of the dataframe
 
 db_connection = sqlite3.connect('backend/db/lumber.sqlite3')
 c = db_connection.cursor()
